@@ -15,7 +15,12 @@ public class ui {
 
         String[] availableAlgorithms = { "Bubble Sort", "Selection Sort"};
         final JComboBox<String> selectAlgorithm = new JComboBox<>(availableAlgorithms);
+        selectAlgorithm.setPreferredSize(new Dimension(100, selectAlgorithm.getPreferredSize().height));
         panel.add(selectAlgorithm);
+
+        JTextField inputField = new JTextField("29,14,90,22,41,11,33");
+        inputField.setPreferredSize(new Dimension(140, selectAlgorithm.getPreferredSize().height));
+        panel.add(inputField);
 
         JButton runButton = new JButton("Run");
         panel.add(runButton);
