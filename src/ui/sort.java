@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 
 public class sort {
     public static JButton executeRunButton(JTextField inputField, JComboBox<String> selectAlgorithm){
@@ -26,7 +25,7 @@ public class sort {
                 String selectedAlgorithm = (String) selectAlgorithm.getSelectedItem();
                 if(selectedAlgorithm.equals("Bubble Sort")){
                     bubbleSort sort = new bubbleSort();
-                    sort.runSort(array);
+                    //sort.runSort(array);
                 }
                 System.out.println("Sorted Array: " + java.util.Arrays.toString(array));
             }

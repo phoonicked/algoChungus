@@ -12,6 +12,8 @@ public class ui {
         frame.setSize(600, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        frame.setLayout(new BorderLayout());
+
         JPanel menuPanel = new JPanel();
         menuPanel.setLayout(new FlowLayout());
 
@@ -26,11 +28,23 @@ public class ui {
 
         // Call the executeRunButton method with the relevant components
         JButton runButton = sort.executeRunButton(inputField, selectAlgorithm);
-
-        // Add the runButton to the menuPanel
         menuPanel.add(runButton);
 
-        frame.add(menuPanel);
+        JPanel rectanglePanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                drawRectangles(g);
+            }
+        };
+        frame.add(menuPanel, BorderLayout.NORTH);
+        frame.add(rectanglePanel, BorderLayout.CENTER);
         frame.setVisible(true);
+    }
+
+    private void drawRectangles(Graphics g){
+        g.setColor(Color.BLUE);
+        g.fillRect(50,50,100,50);
+        g.fillRect(200,100,80,120);
     }
 }
