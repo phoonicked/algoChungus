@@ -3,34 +3,48 @@ package algorithms;
 import javax.swing.*;
 import ui.sortVisualizer;
 
-public class bubbleSort {
-    public static void runSort(int[] array, sortVisualizer panel){
-        int arraySize = array.length;
-        for (int i = 0; i < arraySize - 1; i++) {
-            for (int j = 0; j < arraySize - i - 1; j++) {
-                if(array[j] > array[j+1]){
-                    int temp = array[j];
-                    array[j] = array[j+1];
-                    array[j+1] = temp;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-                    SwingUtilities.invokeLater(() -> {
-                        panel.setSorted(false);
-                        panel.repaint();
-                    });
-                    try{
-                        Thread.sleep(500);
-                    }catch (InterruptedException e){
-                        e.printStackTrace();
+public class bubbleSort {
+    public static void runSort(int[] array, sortVisualizer panel) {
+        int arraySize = array.length;
+        Timer timer = new Timer(100, null);
+
+        timer.addActionListener(new ActionListener() {
+            int i = 0;
+            int j = 0;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (i < arraySize - 1) {
+                    if (j < arraySize - i - 1) {
+                        if (array[j] > array[j + 1]) {
+                            swap(array, j, j + 1);
+                            panel.setSorted(false);
+                            panel.repaint();
+                        }
+                        j++;
+                    } else {
+                        j = 0;
+                        i++;
                     }
+                } else {
+                    timer.stop();
+                    panel.setSorted(true);
+                    panel.repaint();
                 }
             }
-        }
-        SwingUtilities.invokeLater(() -> {
-            panel.setSorted(true);
-            panel.repaint();
         });
+        timer.start();
     }
 
+
+    private static void swap(int[] array, int i, int j){
+        int temp=array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
     public String getName(){
         return "Bubble Sort";
     }
