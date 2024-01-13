@@ -1,9 +1,10 @@
 package algorithms;
 
 import javax.swing.*;
+import ui.sortVisualizer;
 
 public class bubbleSort {
-    public static void runSort(int[] array, JPanel panel){
+    public static void runSort(int[] array, sortVisualizer panel){
         int arraySize = array.length;
         for (int i = 0; i < arraySize - 1; i++) {
             for (int j = 0; j < arraySize - i - 1; j++) {
@@ -12,7 +13,10 @@ public class bubbleSort {
                     array[j] = array[j+1];
                     array[j+1] = temp;
 
-                    panel.repaint();
+                    SwingUtilities.invokeLater(() -> {
+                        panel.setSorted(false);
+                        panel.repaint();
+                    });
                     try{
                         Thread.sleep(500);
                     }catch (InterruptedException e){
@@ -21,6 +25,10 @@ public class bubbleSort {
                 }
             }
         }
+        SwingUtilities.invokeLater(() -> {
+            panel.setSorted(true);
+            panel.repaint();
+        });
     }
 
     public String getName(){

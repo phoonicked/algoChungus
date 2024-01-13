@@ -9,7 +9,8 @@ import java.awt.event.ActionListener;
 
 public class menu extends JFrame {
     private int[] array;
-    private JPanel visualizerPanel;
+    private sortVisualizer visualizerPanel;
+    private boolean sortingStarted = false;
 
     public menu(){
         setTitle("Algorithm Chungus");
@@ -22,30 +23,27 @@ public class menu extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String inputText = inputField.getText();
-                String[] values = inputText.split(",");
-                array = new int[values.length];
-                for (int i = 0; i < values.length; i++) {
-                    array[i] = Integer.parseInt(values[i].trim());
-                }
-
-                if(visualizerPanel != null){
-                    remove(visualizerPanel);
-                }
-
-                visualizerPanel = new sortVisualizer(array, getWidth(), getHeight() - 30);
-                add(visualizerPanel, BorderLayout.CENTER);
-                revalidate();
-                repaint();
-
-                Timer timer = new Timer(1000, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        bubbleSort.runSort(array, visualizerPanel);
-                        ((Timer) e.getSource()).stop();
+                if(!sortingStarted){
+                    sortingStarted = true;
+                    String inputText = inputField.getText();
+                    String[] values = inputText.split(",");
+                    array = new int[values.length];
+                    for (int i = 0; i < values.length; i++) {
+                        array[i] = Integer.parseInt(values[i].trim());
                     }
-                });
-                timer.start();
+
+                    if(visualizerPanel != null){
+                        remove(visualizerPanel);
+                    }
+
+                    visualizerPanel = new sortVisualizer(array, getWidth(), getHeight() - 30);
+                    add(visualizerPanel, BorderLayout.CENTER);
+                    revalidate();
+                    repaint();
+                    runAlgorithm();
+                } else {
+                    sortingStarted = false;
+                }
             }
         });
 
@@ -55,5 +53,17 @@ public class menu extends JFrame {
         menuPanel.add(startButton);
 
         add(menuPanel, BorderLayout.NORTH);
+    }
+
+    private void runAlgorithm(){
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bubbleSort.runSort(array, visualizerPanel);
+                ((Timer) e.getSource()).stop();
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 }
