@@ -5,45 +5,35 @@ import algorithms.bubbleSort;
 import javax.swing.*;
 import java.awt.*;
 
-public class sortVisualizer extends JFrame {
+public class sortVisualizer extends JPanel {
     private int[] array;
 
-    public sortVisualizer(int[] array) {
+    public sortVisualizer(int[] array, int width, int height) {
         this.array = array;
-        setTitle("Algorithm Chungus");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setPreferredSize(new Dimension(width, height));
+    }
 
-        bubbleSort bs = new bubbleSort();
+    public void runSort(){
+        bubbleSort.runSort(array, this);
+    }
 
-        JPanel panel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                drawRectangles(g);
-            }
-        };
-
-        add(panel);
-
-        JButton startButton = new JButton("Run");
-        startButton.addActionListener(e -> {
-            bubbleSort.runSort(array, panel);
-        });
-
-        add(startButton, BorderLayout.SOUTH);
+    @Override
+    protected void paintComponent(Graphics g){
+        super.paintComponents(g);
+        drawRectangles(g);
     }
 
     private void drawRectangles(Graphics g){
-        int width = getWidth()/array.length;
+        int rectWidth = getWidth()/array.length;
+        int rectHeight = getHeight()/array.length;
         for (int i = 0; i < array.length; i++) {
-            int height = array[i] * 30;
+            int rectX = i * rectWidth;
+            int rectY = getHeight() - array[i] * rectHeight;
             g.setColor(Color.CYAN);
-            g.fillRect(i * width, getHeight() - height, width, height);
+            g.fillRect(rectX, rectY, rectWidth, array[i] * rectHeight);
 
             g.setColor(Color.BLACK);
-            g.drawRect(i * width, getHeight() - height, width, height);
+            g.drawRect(rectX, rectY, rectWidth, array[i] * rectHeight);
         }
     }
 }
