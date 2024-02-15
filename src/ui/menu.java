@@ -1,6 +1,7 @@
 package ui;
 
 import algorithms.bubbleSort;
+import algorithms.selectionSort;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +12,7 @@ public class menu extends JFrame {
     private int[] array;
     private sortVisualizer visualizerPanel;
     private boolean sortingStarted = false;
+    private JComboBox<String> algorithmSelector;
 
     public menu(){
         setTitle("Algorithm Chungus");
@@ -47,9 +49,15 @@ public class menu extends JFrame {
             }
         });
 
+        algorithmSelector = new JComboBox<>();
+        algorithmSelector.addItem(algorithms.bubbleSort.setName());
+        algorithmSelector.addItem(algorithms.selectionSort.setName());
+
+
         JPanel menuPanel = new JPanel();
         menuPanel.add(new JLabel("Enter values: "));
         menuPanel.add(inputField);
+        menuPanel.add(algorithmSelector);
         menuPanel.add(startButton);
 
         add(menuPanel, BorderLayout.NORTH);
@@ -59,7 +67,13 @@ public class menu extends JFrame {
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                bubbleSort.runSort(array, visualizerPanel);
+                // Check the selected algorithm and run the corresponding sort
+                String selectedAlgorithm = (String) algorithmSelector.getSelectedItem();
+                if (selectedAlgorithm.equals("Bubble Sort")) {
+                    bubbleSort.runSort(array, visualizerPanel);
+                } else if (selectedAlgorithm.equals("Selection Sort")) {
+                    selectionSort.runSort(array, visualizerPanel);
+                }
                 ((Timer) e.getSource()).stop();
             }
         });

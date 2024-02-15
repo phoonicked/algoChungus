@@ -45,7 +45,7 @@ public class bubbleSort {
         array[i] = array[j];
         array[j] = temp;
     }
-    public String getName(){
+    public static String setName(){
         return "Bubble Sort";
     }
 }
