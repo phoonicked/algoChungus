@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 public class bubbleSort {
     public static void runSort(int[] array, sortVisualizer panel) {
         int arraySize = array.length;
-        Timer timer = new Timer(80, null);
+        Timer timer = new Timer(0, null);
 
         timer.addActionListener(new ActionListener() {
             int i = 0;

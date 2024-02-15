@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 public class selectionSort {
     public static void runSort(int[] array, sortVisualizer panel) {
         int arraySize = array.length;
-        Timer timer = new Timer(200, new ActionListener() {
+        Timer timer = new Timer(0, new ActionListener() {
             int currentIndex = 0;
 
             @Override
