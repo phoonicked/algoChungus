@@ -14,6 +14,7 @@ public class menu extends JFrame {
     private boolean sortingStarted = false;
     private final JComboBox<String> algorithmSelector;
     private final JLabel timeLabel;
+    private final JLabel swapNumber;
 
     public menu(){
         setTitle("Algorithm Chungus");
@@ -37,7 +38,7 @@ public class menu extends JFrame {
                     remove(visualizerPanel);
                 }
 
-                visualizerPanel = new sortVisualizer(array, getWidth(), getHeight() - 30);
+                visualizerPanel = new sortVisualizer(array, getWidth(), getHeight() - 100);
                 add(visualizerPanel, BorderLayout.CENTER);
                 revalidate();
                 repaint();
@@ -52,6 +53,8 @@ public class menu extends JFrame {
         algorithmSelector.addItem(algorithms.selectionSort.setName());
 
         timeLabel = new JLabel("Time: ");
+        swapNumber = new JLabel("Swaps: ");
+
 
         JPanel menuPanel = new JPanel();
         menuPanel.add(new JLabel("Enter values: "));
@@ -59,6 +62,7 @@ public class menu extends JFrame {
         menuPanel.add(algorithmSelector);
         menuPanel.add(startButton);
         menuPanel.add(timeLabel);
+        menuPanel.add(swapNumber);
 
         add(menuPanel, BorderLayout.NORTH);
     }
