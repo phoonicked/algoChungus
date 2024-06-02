@@ -1,8 +1,8 @@
 package ui;
 
-import algorithms.bubbleSort;
-import algorithms.selectionSort;
-
+import algorithms.sortAlgorithm;
+import org.reflections.Reflections;
+import java.util.Set;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -49,8 +49,7 @@ public class menu extends JFrame {
         });
 
         algorithmSelector = new JComboBox<>();
-        algorithmSelector.addItem(algorithms.bubbleSort.setName());
-        algorithmSelector.addItem(algorithms.selectionSort.setName());
+        loadAlgorithms();
 
         timeLabel = new JLabel("Time: ");
         swapNumber = new JLabel("Swaps: ");
@@ -67,13 +66,35 @@ public class menu extends JFrame {
         add(menuPanel, BorderLayout.NORTH);
     }
 
+    public void loadAlgorithms(){
+        Reflections reflections = new Reflections("algorithms");
+        Set<Class<? extends sortAlgorithm>> classes = reflections.getSubTypesOf(sortAlgorithm.class);
+        for(Class<? extends sortAlgorithm> c : classes){
+            try {
+                sortAlgorithm algorithm = c.getDeclaredConstructor().newInstance();
+                algorithmSelector.addItem(algorithm.getName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void runAlgorithm(){
         String selectedAlgorithm = (String) algorithmSelector.getSelectedItem();
         assert selectedAlgorithm != null;
-        if (selectedAlgorithm.equals("Bubble Sort")) {
-            bubbleSort.runSort(array, visualizerPanel);
-        } else if (selectedAlgorithm.equals("Selection Sort")) {
-            selectionSort.runSort(array, visualizerPanel, swapNumber);
+
+        Reflections reflections = new Reflections("algorithms");
+        Set<Class<? extends sortAlgorithm>> classes = reflections.getSubTypesOf(sortAlgorithm.class);
+        for(Class<? extends sortAlgorithm> c : classes){
+            try {
+                sortAlgorithm algorithm = c.getDeclaredConstructor().newInstance();
+                if(algorithm.getName().equals(selectedAlgorithm)){
+                    algorithm.runSort(array, visualizerPanel, swapNumber);
+                    break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         Timer timer = new Timer(0, new ActionListener() {
             final long startTime = System.currentTimeMillis();

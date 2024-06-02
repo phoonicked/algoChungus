@@ -6,8 +6,9 @@ import ui.sortVisualizer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class selectionSort {
-    public static void runSort(int[] array, sortVisualizer panel, JLabel swapLabel) {
+public class selectionSort implements sortAlgorithm {
+    @Override
+    public void runSort(int[] array, sortVisualizer panel, JLabel swapLabel) {
         int arraySize = array.length;
         int[] swapCount = {0};
         Timer timer = new Timer(100, new ActionListener() {
@@ -42,7 +43,8 @@ public class selectionSort {
         timer.start();
     }
 
-    public static String setName(){
+    @Override
+    public String getName(){
         return "Selection Sort";
     }
 }
