@@ -25,19 +25,30 @@ public class sortVisualizer extends JPanel {
 
     private void drawRectangles(Graphics g) {
         int rectWidth = getWidth() / array.length;
-        int rectHeight = getHeight() / array.length;
+        int maxValue = getMaxValue(array);
         for (int i = 0; i < array.length; i++) {
             int rectX = i * rectWidth;
-            int rectY = getHeight() - array[i] * rectHeight;
+            int rectHeight = (int)((double) array[i] / maxValue * getHeight());
+            int rectY = getHeight() - rectHeight;
             if(sorted){
                 g.setColor(Color.GREEN);
             } else {
                 g.setColor(Color.CYAN);
             }
-            g.fillRect(rectX, rectY, rectWidth, array[i] * rectHeight);
+            g.fillRect(rectX, rectY, rectWidth, rectHeight);
 
             g.setColor(Color.BLACK);
-            g.drawRect(rectX, rectY, rectWidth, array[i] * rectHeight);
+            g.drawRect(rectX, rectY, rectWidth, rectHeight);
         }
+    }
+
+    private int getMaxValue(int[] array){
+        int maxValue = Integer.MIN_VALUE;
+        for(int value: array){
+            if(value > maxValue){
+                maxValue = value;
+            }
+        }
+        return maxValue;
     }
 }
