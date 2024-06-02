@@ -7,9 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class selectionSort {
-    public static void runSort(int[] array, sortVisualizer panel) {
+    public static void runSort(int[] array, sortVisualizer panel, JLabel swapLabel) {
         int arraySize = array.length;
-        Timer timer = new Timer(0, new ActionListener() {
+        int[] swapCount = {0};
+        Timer timer = new Timer(100, new ActionListener() {
             int currentIndex = 0;
 
             @Override
@@ -21,9 +22,13 @@ public class selectionSort {
                             minimumIndex = i;
                         }
                     }
-                    int temp = array[currentIndex];
-                    array[currentIndex] = array[minimumIndex];
-                    array[minimumIndex] = temp;
+                    if(minimumIndex != currentIndex){
+                        int temp = array[currentIndex];
+                        array[currentIndex] = array[minimumIndex];
+                        array[minimumIndex] = temp;
+                        swapCount[0]++;
+                        swapLabel.setText("Swaps: " + swapCount[0]);
+                    }
                     panel.setSorted(false);
                     panel.repaint();
                     currentIndex++;

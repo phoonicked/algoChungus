@@ -73,7 +73,7 @@ public class menu extends JFrame {
         if (selectedAlgorithm.equals("Bubble Sort")) {
             bubbleSort.runSort(array, visualizerPanel);
         } else if (selectedAlgorithm.equals("Selection Sort")) {
-            selectionSort.runSort(array, visualizerPanel);
+            selectionSort.runSort(array, visualizerPanel, swapNumber);
         }
         Timer timer = new Timer(0, new ActionListener() {
             final long startTime = System.currentTimeMillis();
