@@ -64,6 +64,17 @@ public class menu extends JFrame {
         menuPanel.add(swapNumber);
 
         add(menuPanel, BorderLayout.NORTH);
+
+        JPanel buttonPanel =  new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+        JButton practiceButton = new JButton("Practice");
+        JButton quizButton = new JButton("Quiz");
+        JButton explanationButton = new JButton("Explanation");
+        buttonPanel.add(practiceButton);
+        buttonPanel.add(quizButton);
+        buttonPanel.add(explanationButton);
+
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 
     public void loadAlgorithms(){
