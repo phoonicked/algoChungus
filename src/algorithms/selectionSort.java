@@ -13,7 +13,6 @@ public class selectionSort implements sortAlgorithm {
         int arraySize = array.length;
         int[] swapCount = {0};
 
-        // Record the initial state
         steps.add(array.clone());
 
         for (int currentIndex = 0; currentIndex < arraySize - 1; currentIndex++) {
@@ -27,15 +26,11 @@ public class selectionSort implements sortAlgorithm {
                 swap(array, currentIndex, minimumIndex, swapCount, swapLabel);
                 panel.setSorted(false);
             }
-            // Record state after each swap
             steps.add(array.clone());
         }
-
-        // Set sorted state
         panel.setSorted(true);
         steps.add(array.clone());
 
-        // Update swap count label
         swapLabel.setText("Swaps: " + swapCount[0]);
 
         return steps;

@@ -139,7 +139,6 @@ public class menu extends JFrame {
                 e.printStackTrace();
             }
         }
-        // Show the initial unsorted array
         visualizerPanel.repaint();
         Timer timer = new Timer(0, new ActionListener() {
             final long startTime = System.currentTimeMillis();

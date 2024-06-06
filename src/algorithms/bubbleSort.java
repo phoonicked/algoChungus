@@ -20,16 +20,12 @@ public class bubbleSort implements sortAlgorithm {
                     swap(array, j, j + 1, swapCount, swapLabel);
                     panel.setSorted(false);
                 }
-                // Record state after each comparison
                 steps.add(array.clone());
             }
         }
-
-        // Set sorted state
         panel.setSorted(true);
         steps.add(array.clone());
 
-        // Update swap count label
         swapLabel.setText("Swaps: " + swapCount[0]);
 
         return steps;
