@@ -2,11 +2,13 @@ package ui;
 
 import algorithms.sortAlgorithm;
 import org.reflections.Reflections;
-import java.util.Set;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Set;
 
 public class menu extends JFrame {
     private int[] array;
@@ -16,7 +18,7 @@ public class menu extends JFrame {
     private final JLabel timeLabel;
     private final JLabel swapNumber;
 
-    public menu(){
+    public menu() {
         setTitle("Algorithm Chungus");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,7 +27,7 @@ public class menu extends JFrame {
         JTextField inputField = new JTextField(20);
         JButton startButton = new JButton("Run");
         startButton.addActionListener(e -> {
-            if(!sortingStarted){
+            if (!sortingStarted) {
                 sortingStarted = true;
                 String inputText = inputField.getText();
                 String[] values = inputText.split(",");
@@ -34,7 +36,7 @@ public class menu extends JFrame {
                     array[i] = Integer.parseInt(values[i].trim());
                 }
 
-                if(visualizerPanel != null){
+                if (visualizerPanel != null) {
                     remove(visualizerPanel);
                 }
 
@@ -54,7 +56,6 @@ public class menu extends JFrame {
         timeLabel = new JLabel("Time: ");
         swapNumber = new JLabel("Swaps: ");
 
-
         JPanel menuPanel = new JPanel();
         menuPanel.add(new JLabel("Enter values: "));
         menuPanel.add(inputField);
@@ -65,22 +66,52 @@ public class menu extends JFrame {
 
         add(menuPanel, BorderLayout.NORTH);
 
-        JPanel buttonPanel =  new JPanel();
+        JPanel arrowPanel = arrowPanel();
+
+        JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         JButton practiceButton = new JButton("Practice");
         JButton quizButton = new JButton("Quiz");
         JButton explanationButton = new JButton("Explanation");
+
         buttonPanel.add(practiceButton);
         buttonPanel.add(quizButton);
         buttonPanel.add(explanationButton);
 
-        add(buttonPanel, BorderLayout.SOUTH);
+        JPanel containerPanel = new JPanel();
+        containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
+        containerPanel.add(arrowPanel, BorderLayout.NORTH);
+        containerPanel.add(buttonPanel, BorderLayout.SOUTH);
+        add(containerPanel, BorderLayout.SOUTH);
     }
 
-    public void loadAlgorithms(){
+    private JPanel arrowPanel() {
+        JPanel arrowPanel = new JPanel();
+        arrowPanel.setLayout(new FlowLayout());
+        JButton prevButton = new JButton("<");
+        prevButton.addActionListener(e -> visualizerPanel.previousStep());
+        JButton nextButton = new JButton(">");
+        nextButton.addActionListener(e -> visualizerPanel.nextStep());
+        JButton visualizeButton = new JButton("Visualize");
+        visualizeButton.addActionListener(e -> {
+            if (visualizerPanel != null) {
+                remove(visualizerPanel);
+            }
+            visualizerPanel = new sortVisualizer(array, getWidth(), getHeight() - 100);
+            add(visualizerPanel, BorderLayout.CENTER);
+            revalidate();
+            repaint();
+        });
+        arrowPanel.add(prevButton);
+        arrowPanel.add(nextButton);
+        arrowPanel.add(visualizeButton);
+        return arrowPanel;
+    }
+
+    public void loadAlgorithms() {
         Reflections reflections = new Reflections("algorithms");
         Set<Class<? extends sortAlgorithm>> classes = reflections.getSubTypesOf(sortAlgorithm.class);
-        for(Class<? extends sortAlgorithm> c : classes){
+        for (Class<? extends sortAlgorithm> c : classes) {
             try {
                 sortAlgorithm algorithm = c.getDeclaredConstructor().newInstance();
                 algorithmSelector.addItem(algorithm.getName());
@@ -90,25 +121,29 @@ public class menu extends JFrame {
         }
     }
 
-    private void runAlgorithm(){
+    private void runAlgorithm() {
         String selectedAlgorithm = (String) algorithmSelector.getSelectedItem();
         assert selectedAlgorithm != null;
 
         Reflections reflections = new Reflections("algorithms");
         Set<Class<? extends sortAlgorithm>> classes = reflections.getSubTypesOf(sortAlgorithm.class);
-        for(Class<? extends sortAlgorithm> c : classes){
+        for (Class<? extends sortAlgorithm> c : classes) {
             try {
                 sortAlgorithm algorithm = c.getDeclaredConstructor().newInstance();
-                if(algorithm.getName().equals(selectedAlgorithm)){
-                    algorithm.runSort(array, visualizerPanel, swapNumber);
+                if (algorithm.getName().equals(selectedAlgorithm)) {
+                    List<int[]> steps = algorithm.runSort(array, visualizerPanel, swapNumber);
+                    visualizerPanel.setSteps(steps);
                     break;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        // Show the initial unsorted array
+        visualizerPanel.repaint();
         Timer timer = new Timer(0, new ActionListener() {
             final long startTime = System.currentTimeMillis();
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 ((Timer) e.getSource()).stop();

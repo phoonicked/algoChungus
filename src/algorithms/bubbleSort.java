@@ -2,56 +2,48 @@ package algorithms;
 
 import javax.swing.*;
 import ui.sortVisualizer;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class bubbleSort implements sortAlgorithm {
     @Override
-    public void runSort(int[] array, sortVisualizer panel, JLabel swapLabel) {
+    public List<int[]> runSort(int[] array, sortVisualizer panel, JLabel swapLabel) {
+        List<int[]> steps = new ArrayList<>();
         int arraySize = array.length;
         int[] swapCount = {0};
-        Timer timer = new Timer(100, null);
 
-        timer.addActionListener(new ActionListener() {
-            int i = 0;
-            int j = 0;
+        steps.add(array.clone());
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (i < arraySize - 1) {
-                    if (j < arraySize - i - 1) {
-                        if (array[j] > array[j + 1]) {
-                            swap(array, j, j + 1, swapCount, swapLabel);
-                            panel.setSorted(false);
-                            panel.repaint();
-                        }
-                        j++;
-                    } else {
-                        j = 0;
-                        i++;
-                    }
-                } else {
-                    timer.stop();
-                    panel.setSorted(true);
-                    panel.repaint();
+        for (int i = 0; i < arraySize - 1; i++) {
+            for (int j = 0; j < arraySize - i - 1; j++) {
+                if (array[j] > array[j + 1]) {
+                    swap(array, j, j + 1, swapCount, swapLabel);
+                    panel.setSorted(false);
                 }
+                // Record state after each comparison
+                steps.add(array.clone());
             }
-        });
-        timer.start();
+        }
+
+        // Set sorted state
+        panel.setSorted(true);
+        steps.add(array.clone());
+
+        // Update swap count label
+        swapLabel.setText("Swaps: " + swapCount[0]);
+
+        return steps;
     }
 
-
     private static void swap(int[] array, int i, int j, int[] swapCount, JLabel swapLabel) {
-        int temp=array[i];
+        int temp = array[i];
         array[i] = array[j];
         array[j] = temp;
         swapCount[0]++;
-        swapLabel.setText("Swaps: " + swapCount[0]);
     }
 
     @Override
-    public String getName(){
+    public String getName() {
         return "Bubble Sort";
     }
 }
