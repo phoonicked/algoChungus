@@ -18,12 +18,10 @@ public class bubbleSort implements sortAlgorithm {
             for (int j = 0; j < arraySize - i - 1; j++) {
                 if (array[j] > array[j + 1]) {
                     swap(array, j, j + 1, swapCount, swapLabel);
-                    panel.setSorted(false);
                 }
                 steps.add(array.clone());
             }
         }
-        panel.setSorted(true);
         steps.add(array.clone());
 
         swapLabel.setText("Swaps: " + swapCount[0]);

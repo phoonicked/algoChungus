@@ -6,7 +6,6 @@ import java.util.List;
 
 public class sortVisualizer extends JPanel {
     private int[] array;
-    private boolean sorted = false;
     private int currentStep = 0;
     private List<int[]> steps;
     private boolean remainingChanges = false;
@@ -14,11 +13,6 @@ public class sortVisualizer extends JPanel {
     public sortVisualizer(int[] array, int width, int height) {
         this.array = array;
         setPreferredSize(new Dimension(width, height));
-    }
-
-    public void setSorted(boolean sorted){
-        this.sorted = sorted;
-        repaint();
     }
 
     public void setSteps(List<int[]> steps){
@@ -37,9 +31,6 @@ public class sortVisualizer extends JPanel {
             array = steps.get(currentStep);
             if (currentStep == steps.size() - 1) {
                 remainingChanges = false;
-                setSorted(true);
-            } else {
-                setSorted(false);
             }
             repaint();
         }

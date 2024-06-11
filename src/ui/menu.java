@@ -15,7 +15,6 @@ public class menu extends JFrame {
     private sortVisualizer visualizerPanel;
     private boolean sortingStarted = false;
     private final JComboBox<String> algorithmSelector;
-    private final JLabel timeLabel;
     private final JLabel swapNumber;
 
     public menu() {
@@ -53,7 +52,6 @@ public class menu extends JFrame {
         algorithmSelector = new JComboBox<>();
         loadAlgorithms();
 
-        timeLabel = new JLabel("Time: ");
         swapNumber = new JLabel("Swaps: ");
 
         JPanel menuPanel = new JPanel();
@@ -61,7 +59,6 @@ public class menu extends JFrame {
         menuPanel.add(inputField);
         menuPanel.add(algorithmSelector);
         menuPanel.add(startButton);
-        menuPanel.add(timeLabel);
         menuPanel.add(swapNumber);
 
         add(menuPanel, BorderLayout.NORTH);
@@ -140,18 +137,5 @@ public class menu extends JFrame {
             }
         }
         visualizerPanel.repaint();
-        Timer timer = new Timer(0, new ActionListener() {
-            final long startTime = System.currentTimeMillis();
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((Timer) e.getSource()).stop();
-                long endTime = System.currentTimeMillis();
-                long executionTime = endTime - startTime;
-                timeLabel.setText("Time: " + executionTime + " ms");
-            }
-        });
-        timer.setRepeats(false);
-        timer.start();
     }
 }

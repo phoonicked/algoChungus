@@ -24,11 +24,9 @@ public class selectionSort implements sortAlgorithm {
             }
             if (minimumIndex != currentIndex) {
                 swap(array, currentIndex, minimumIndex, swapCount, swapLabel);
-                panel.setSorted(false);
             }
             steps.add(array.clone());
         }
-        panel.setSorted(true);
         steps.add(array.clone());
 
         swapLabel.setText("Swaps: " + swapCount[0]);
