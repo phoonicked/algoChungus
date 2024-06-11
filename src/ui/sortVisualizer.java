@@ -8,17 +8,24 @@ public class sortVisualizer extends JPanel {
     private int[] array;
     private int currentStep = 0;
     private List<int[]> steps;
-    private boolean remainingChanges = false;
+    private List<int[]> compareIndices;
+    private int compareCurrentIndex = -1;
+    private int compareNextIndex = -1;
+    private boolean[] sortedElements;
 
     public sortVisualizer(int[] array, int width, int height) {
         this.array = array;
         setPreferredSize(new Dimension(width, height));
+        sortedElements = new boolean[array.length];
     }
 
-    public void setSteps(List<int[]> steps){
+    public void setSteps(List<int[]> steps, List<int[]> compareIndices) {
+        this.compareIndices = compareIndices;
         this.steps = steps;
         currentStep = 0;
-        remainingChanges = true;
+        compareCurrentIndex = -1;
+        compareNextIndex = -1;
+        sortedElements = new boolean[array.length];
         if(steps != null && !steps.isEmpty()){
             array = steps.get(currentStep);
         }
@@ -29,10 +36,16 @@ public class sortVisualizer extends JPanel {
         if(steps != null && currentStep < steps.size() - 1){
             currentStep++;
             array = steps.get(currentStep);
-            if (currentStep == steps.size() - 1) {
-                remainingChanges = false;
+            int[] indices = compareIndices.get(currentStep);
+            compareCurrentIndex = indices[0];
+            compareNextIndex = indices[1];
+            if(currentStep == steps.size() - 1){
+                for(int i = 0; i < array.length; i++){
+                    sortedElements[i] = true;
+                }
             }
             repaint();
+            System.out.println("Next Step: " + currentStep); // Debug
         }
     }
 
@@ -40,9 +53,17 @@ public class sortVisualizer extends JPanel {
         if(steps != null && currentStep > 0){
             currentStep--;
             array = steps.get(currentStep);
+            int[] indices = compareIndices.get(currentStep);
+            compareCurrentIndex = indices[0];
+            compareNextIndex = indices[1];
+            for (int i = currentStep + 1; i < array.length; i++) {
+                sortedElements[i] = false;
+            }
             repaint();
+            System.out.println("Previous Step: " + currentStep); // Debug
         }
     }
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -57,13 +78,14 @@ public class sortVisualizer extends JPanel {
             int rectX = i * rectWidth;
             int rectHeight = (int)((double) array[i] / maxValue * getHeight());
             int rectY = getHeight() - rectHeight;
-            if(!remainingChanges){
+            if(sortedElements[i]){
                 g.setColor(Color.GREEN);
+            } else if(i == compareCurrentIndex || i == compareNextIndex) {
+                g.setColor(Color.YELLOW);
             } else {
                 g.setColor(Color.CYAN);
             }
             g.fillRect(rectX, rectY, rectWidth, rectHeight);
-
             g.setColor(Color.BLACK);
             g.drawRect(rectX, rectY, rectWidth, rectHeight);
         }

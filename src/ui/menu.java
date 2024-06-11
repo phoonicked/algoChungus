@@ -89,19 +89,8 @@ public class menu extends JFrame {
         prevButton.addActionListener(e -> visualizerPanel.previousStep());
         JButton nextButton = new JButton(">");
         nextButton.addActionListener(e -> visualizerPanel.nextStep());
-        JButton visualizeButton = new JButton("Visualize");
-        visualizeButton.addActionListener(e -> {
-            if (visualizerPanel != null) {
-                remove(visualizerPanel);
-            }
-            visualizerPanel = new sortVisualizer(array, getWidth(), getHeight() - 100);
-            add(visualizerPanel, BorderLayout.CENTER);
-            revalidate();
-            repaint();
-        });
         arrowPanel.add(prevButton);
         arrowPanel.add(nextButton);
-        arrowPanel.add(visualizeButton);
         return arrowPanel;
     }
 
@@ -128,8 +117,7 @@ public class menu extends JFrame {
             try {
                 sortAlgorithm algorithm = c.getDeclaredConstructor().newInstance();
                 if (algorithm.getName().equals(selectedAlgorithm)) {
-                    List<int[]> steps = algorithm.runSort(array, visualizerPanel, swapNumber);
-                    visualizerPanel.setSteps(steps);
+                    algorithm.runSort(array, visualizerPanel, swapNumber);
                     break;
                 }
             } catch (Exception e) {
