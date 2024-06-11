@@ -9,6 +9,7 @@ public class sortVisualizer extends JPanel {
     private int currentStep = 0;
     private List<int[]> steps;
     private List<int[]> compareIndices;
+    private List<boolean[]> sortedStates;
     private int compareCurrentIndex = -1;
     private int compareNextIndex = -1;
     private boolean[] sortedElements;
@@ -19,15 +20,17 @@ public class sortVisualizer extends JPanel {
         sortedElements = new boolean[array.length];
     }
 
-    public void setSteps(List<int[]> steps, List<int[]> compareIndices) {
+    public void setSteps(List<int[]> steps, List<int[]> compareIndices, List<boolean[]> sortedStates) {
         this.compareIndices = compareIndices;
         this.steps = steps;
+        this.sortedStates = sortedStates;
         currentStep = 0;
         compareCurrentIndex = -1;
         compareNextIndex = -1;
         sortedElements = new boolean[array.length];
         if(steps != null && !steps.isEmpty()){
             array = steps.get(currentStep);
+            sortedElements = sortedStates.get(currentStep);
         }
         repaint();
     }
@@ -39,11 +42,7 @@ public class sortVisualizer extends JPanel {
             int[] indices = compareIndices.get(currentStep);
             compareCurrentIndex = indices[0];
             compareNextIndex = indices[1];
-            if(currentStep == steps.size() - 1){
-                for(int i = 0; i < array.length; i++){
-                    sortedElements[i] = true;
-                }
-            }
+            sortedElements = sortedStates.get(currentStep);
             repaint();
             System.out.println("Next Step: " + currentStep); // Debug
         }
@@ -56,9 +55,7 @@ public class sortVisualizer extends JPanel {
             int[] indices = compareIndices.get(currentStep);
             compareCurrentIndex = indices[0];
             compareNextIndex = indices[1];
-            for (int i = currentStep + 1; i < array.length; i++) {
-                sortedElements[i] = false;
-            }
+            sortedElements = sortedStates.get(currentStep);
             repaint();
             System.out.println("Previous Step: " + currentStep); // Debug
         }
