@@ -89,8 +89,11 @@ public class menu extends JFrame {
         prevButton.addActionListener(e -> visualizerPanel.previousStep());
         JButton nextButton = new JButton(">");
         nextButton.addActionListener(e -> visualizerPanel.nextStep());
+        JButton visualiseButton = new JButton("Visualise");
+        visualiseButton.addActionListener(e -> startVisualisation());
         arrowPanel.add(prevButton);
         arrowPanel.add(nextButton);
+        arrowPanel.add(visualiseButton);
         return arrowPanel;
     }
 
@@ -125,5 +128,19 @@ public class menu extends JFrame {
             }
         }
         visualizerPanel.repaint();
+    }
+
+    private void startVisualisation() {
+       Timer timer = new Timer(100, new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               if(visualizerPanel.getCurrentStep() < visualizerPanel.getStepsSize() - 1){
+                   visualizerPanel.nextStep();
+               } else {
+                   ((Timer) e.getSource()).stop();
+               }
+           }
+       });
+       timer.start();
     }
 }

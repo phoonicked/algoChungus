@@ -61,6 +61,13 @@ public class sortVisualizer extends JPanel {
         }
     }
 
+    public int getCurrentStep(){
+        return currentStep;
+    }
+
+    public int getStepsSize(){
+        return steps != null ? steps.size() : 0;
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
